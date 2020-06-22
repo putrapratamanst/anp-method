@@ -1,80 +1,80 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
-
-use backend\assets\AppAsset;
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
-AppAsset::register($this);
+$user = Yii::$app->user->identity;
 ?>
-<?php $this->beginPage() ?>
-<!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php $this->registerCsrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body>
-<?php $this->beginBody() ?>
-
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
+<?= $this->render('/layouts/head'); ?>
+<style>
+    .fade:not(.show) {
+        opacity: 12;
     }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-    ?>
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+    .alert {
+        position: fixed;
+        padding: .75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+    }
+</style>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <?= $this->render('/layouts/sidenav'); ?>
+            <?= $this->render('/layouts/topnav'); ?>
+            <div class="right_col" role="main">
+                <?= Alert::widget() ?>
+
+                <?= $content; ?>
+            </div>
+            <?= $this->render('/layouts/footer'); ?>
+
+        </div>
     </div>
-</div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+    <!-- jQuery -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/iCheck/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/Flot/jquery.flot.js"></script>
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/Flot/jquery.flot.time.js"></script>
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/moment/min/moment.min.js"></script>
+    <script src="<?= Yii::getAlias('@web/template') ?>/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
+    <!-- Custom Theme Scripts -->
+    <script src="<?= Yii::getAlias('@web/template') ?>/build/js/custom.js"></script>
 
-<?php $this->endBody() ?>
 </body>
+
 </html>
-<?php $this->endPage() ?>
