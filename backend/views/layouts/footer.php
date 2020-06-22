@@ -1,7 +1,7 @@
 <!-- footer content -->
 <footer>
     <div class="pull-right">
-        PT. POS INDONESIA <a href="https://colorlib.com"><?= date('Y')?></a>
+        POLITEKNIK POS INDONESIA <a href="#"><?= date('Y') ?></a>
     </div>
     <div class="clearfix"></div>
 </footer>
