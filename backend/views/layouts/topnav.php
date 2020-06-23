@@ -1,6 +1,5 @@
 <?php
-// $user = Yii::$app->user->identity;
-$user = "";
+$user = Yii::$app->user->identity;
 ?>
 
 <!-- top navigation -->
@@ -13,7 +12,7 @@ $user = "";
             <ul class=" navbar-right">
                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                     <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                        <img src="<?= Yii::getAlias('@web/template/production/') ?>images/img.jpg" alt=""><?= ucwords($user) ?>
+                        <img src="<?= Yii::getAlias('@web/template/production/') ?>images/logo_poltekpos.png" alt=""><?= ucwords($user->username) ?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                         <!-- <a class="dropdown-item" href="javascript:;"> Profile</a>
@@ -24,67 +23,6 @@ $user = "";
                         <a class="dropdown-item" href="javascript:;">Help</a> -->
                         <a class="dropdown-item" href="/site/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                     </div>
-                </li>
-
-                <li role="presentation" class="nav-item dropdown open">
-                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                        <li class="nav-item">
-                            <a class="dropdown-item">
-                                <span class="image"><img src="<?= Yii::getAlias('@web/template/production/') ?>images/img.jpg" alt="Profile Image" /></span>
-                                <span>
-                                    <span>John Smith</span>
-                                    <span class="time">3 mins ago</span>
-                                </span>
-                                <span class="message">
-                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item">
-                                <span class="image"><img src="<?= Yii::getAlias('@web/template/production/') ?>images/img.jpg" alt="Profile Image" /></span>
-                                <span>
-                                    <span>John Smith</span>
-                                    <span class="time">3 mins ago</span>
-                                </span>
-                                <span class="message">
-                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item">
-                                <span class="image"><img src="<?= Yii::getAlias('@web/template/production/') ?>images/img.jpg" alt="Profile Image" /></span>
-                                <span>
-                                    <span>John Smith</span>
-                                    <span class="time">3 mins ago</span>
-                                </span>
-                                <span class="message">
-                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item">
-                                <span class="image"><img src="<?= Yii::getAlias('@web/template/production/') ?>images/img.jpg" alt="Profile Image" /></span>
-                                <span>
-                                    <span>John Smith</span>
-                                    <span class="time">3 mins ago</span>
-                                </span>
-                                <span class="message">
-                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <div class="text-center">
-                                <a class="dropdown-item">
-                                    <strong>See All Alerts</strong>
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
                 </li>
             </ul>
         </nav>

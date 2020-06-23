@@ -1,6 +1,5 @@
 <?php
-// $user = Yii::$app->user->identity;
-$user = "";
+$user = Yii::$app->user->identity;
 ?>
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
@@ -13,11 +12,11 @@ $user = "";
         <!-- menu profile quick info -->
         <div class="profile clearfix">
             <div class="profile_pic">
-                <img src="<?= Yii::getAlias('@web/template/production/') ?>images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="<?= Yii::getAlias('@web/template/production/') ?>images/logo_poltekpos.png" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
-                <h2><?= ucwords($user) ?></h2>
+                <h2><?= ucwords($user->username) ?></h2>
             </div>
         </div>
         <!-- /menu profile quick info -->
