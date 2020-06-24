@@ -29,7 +29,8 @@ $user = Yii::$app->user->identity;
             <div class="menu_section">
                 <h3>Menu</h3>
                 <ul class="nav side-menu">
-                    <!-- <li><a href="/"><i class="fa fa-list"></i> DATA KIRIMAN </a></li>
+                        <li><a href="/responden"><i class="fa fa-list"></i> Data Responden </a></li>
+                    <!-- 
                         <li><a href="/delivery/create"><i class="fa fa-pencil"></i> INPUT KIRIMAN </a></li>
                         <li><a href="/delivery/export"><i class="fa fa-print"></i> LAPORAN </a></li>
                         <li><a href="/site/logout"><i class="fa fa-gear"></i> LOGOUT </a></li> -->
