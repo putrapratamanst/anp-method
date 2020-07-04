@@ -15,6 +15,8 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
+    public $enableCsrfValidation = false;
+
     public function behaviors()
     {
         return [

@@ -29,7 +29,10 @@ $user = Yii::$app->user->identity;
             <div class="menu_section">
                 <h3>Menu</h3>
                 <ul class="nav side-menu">
-                        <li><a href="/responden"><i class="fa fa-list"></i> Data Responden </a></li>
+                        <li><a href="/biodata"><i class="fa fa-list"></i> Data Dosen </a></li>
+                        <li><a href="/jabatan"><i class="fa fa-pencil"></i> Data Jabatan </a></li>
+                        <li><a href="/jurusan"><i class="fa fa-gear"></i> Data Jurusan </a></li>
+                        <li><a href="/prodi"><i class="fa fa-eye"></i> Data Prodi </a></li>
                     <!-- 
                         <li><a href="/delivery/create"><i class="fa fa-pencil"></i> INPUT KIRIMAN </a></li>
                         <li><a href="/delivery/export"><i class="fa fa-print"></i> LAPORAN </a></li>
