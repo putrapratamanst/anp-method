@@ -37,12 +37,15 @@ $user = Yii::$app->user->identity;
                         <li><a href="/delivery/create"><i class="fa fa-pencil"></i> INPUT KIRIMAN </a></li>
                         <li><a href="/delivery/export"><i class="fa fa-print"></i> LAPORAN </a></li>
                         <li><a href="/site/logout"><i class="fa fa-gear"></i> LOGOUT </a></li> -->
-                    <!-- <li><a><i class="fa fa-edit"></i> Data <span class="fa fa-chevron-down"></span></a> -->
-                    <!-- <ul class="nav child_menu">
-                                <li><a href="/delivery/create">Entry Data</a></li>
-                                <li><a href="/delivery/index">List Data</a></li>
+                     <li><a><i class="fa fa-edit"></i> ANP <span class="fa fa-chevron-down"></span></a> 
+                     <ul class="nav child_menu">
+                                <li><a href="/kriteria">Data Kriteria</a></li>
+                                <li><a href="/biodata">Data Alternatif</a></li>
+                                <li><a href="/biodata">Perbandingan Kriteria</a></li>
+                                <li><a href="/biodata">Perbandingan Alternatif</a></li>
+                                <li><a href="/biodata">Hasil Perhitungan</a></li>
                             </ul>
-                        </li> -->
+                        </li> 
                 </ul>
             </div>
         </div>

@@ -75,7 +75,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (Yii::$app->user->isGuest) {
+            return $this->actionLogin();
+        }
+        $userName = Yii::$app->user->identity->username;
+        $biodata = Biodata::find()->where(['nama_lengkap' => $userName])->one();
+
+        return $this->redirect(['/biodata/view', 'id' => $biodata->id]);
     }
 
     /**
