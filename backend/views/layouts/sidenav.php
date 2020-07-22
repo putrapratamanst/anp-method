@@ -41,7 +41,7 @@ $user = Yii::$app->user->identity;
                      <ul class="nav child_menu">
                                 <li><a href="/kriteria">Data Kriteria</a></li>
                                 <li><a href="/biodata">Data Alternatif</a></li>
-                                <li><a href="/biodata">Perbandingan Kriteria</a></li>
+                                <li><a href="/perbandingan-kriteria/banding-kriteria">Perbandingan Kriteria</a></li>
                                 <li><a href="/biodata">Perbandingan Alternatif</a></li>
                                 <li><a href="/biodata">Hasil Perhitungan</a></li>
                             </ul>

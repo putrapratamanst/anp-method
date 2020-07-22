@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use frontend\models\Berkas;
 use Yii;
 
 /**
@@ -64,5 +65,10 @@ class Biodata extends \yii\db\ActiveRecord
             'prodi' => 'Prodi',
             'jurusan' => 'Jurusan',
         ];
+    }
+
+    public function getBerkas()
+    {
+        return $this->hasOne(Berkas::className(), ['biodata_id' => 'id']);
     }
 }
