@@ -124,4 +124,9 @@ class KriteriaController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+    public static function detailById($id)
+    {
+        return Kriteria::find()->where(['id' => $id])->asArray()->one();
+    }
 }

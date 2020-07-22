@@ -22,24 +22,25 @@ use yii\helpers\Html;
                 ?>
             </div>
         </div>
-        <table class="table table-bordered table-hover table-striped">
-            <thead>
-                <tr>
-                    <th width="4%">No.</th>
-                    <th width="18%">Alternatif Kriteria</th>
-                    <th width="55%" style="text-align:center;">Pilih Nilai</th>
-                    <th width="18%">Alternatif Kriteria</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $no = 1;
-                foreach ($listKriteriaPerbandingan as $key => $value) {
-                    foreach ($value as  $values) { ?>
+        <form action="proses-update" method="post">
+
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th width="4%">No.</th>
+                        <th width="18%">Alternatif Kriteria</th>
+                        <th width="55%" style="text-align:center;">Pilih Nilai</th>
+                        <th width="18%">Alternatif Kriteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $no = 1;
+                    foreach ($newListKriteriaPerbandingan as $values) { ?>
 
                         <tr>
                             <td>
-                                <input type="hidden" name="id_nilai_pasangan[]" value="1656"> <!--peer-->
+                                <input type="hidden" name="id_nilai_pasangan[]" value=<?= $values['id_nilai_pasangan']?>>
                                 <?= $no; ?> </td>
                             <td><?= $values['kiri']['kriteria'] ?></td>
                             <td style="text-align:center;">
@@ -47,21 +48,28 @@ use yii\helpers\Html;
                                 <?php
 
                                 foreach ($values['bobot'] as $keyBobot => $bobot) {
-                                    $label = "radio" . $key . $values['kiri']['id'] . $keyBobot;
+                                    $checked = "";
+                                    if ($bobot == $values['value_bobot']) {
+                                        $checked = "checked";
+                                    }
+                                    $label = $values['id_nilai_pasangan'];
                                 ?>
 
-                                    <input class="flat" type="radio" id=<?= $label ?> name=<?= $label?> value=<?= $bobot ?>> <!--peer-->
+                                    <input class="flat" type="radio" id=<?= $label ?> name=<?= $label ?> value=<?= $bobot ?> <?= $checked ?> required>
                                     <label for=<?= $label ?>><?= $bobot ?></label>
                                 <?php   }
                                 ?>
                             </td>
                             <td><?= $values['kanan']['kriteria'] ?></td>
                         </tr>
-                <?php $no++;
+                    <?php $no++;
                     }
-                } ?>
-            </tbody>
-        </table>
+                    ?>
+
+                </tbody>
+            </table>
+            <input type="submit" name="submit" value="SIMPAN DATA" class="btn-primary">
+        </form>
     </div>
 </div>
 <script>

@@ -5,14 +5,14 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%nilai_pasangan_alternatif}}`.
  */
-class m200720_160406_create_nilai_pasangan_alternatif_table extends Migration
+class m200720_160406_create_banding_kriteria_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('{{%nilai_pasangan_alternatif}}', [
+        $this->createTable('{{%banding_kriteria}}', [
             'id' => $this->primaryKey(),
             'id_alternatif' => $this->integer(),
             'id_kriteria_kiri' => $this->integer(),
@@ -27,6 +27,6 @@ class m200720_160406_create_nilai_pasangan_alternatif_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%nilai_pasangan_alternatif}}');
+        $this->dropTable('{{%banding_kriteria}}');
     }
 }
