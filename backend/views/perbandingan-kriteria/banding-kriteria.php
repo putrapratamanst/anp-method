@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\MatriksPerbandinganBerpasangan;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
@@ -85,22 +86,22 @@ use yii\helpers\Html;
             <tbody>
                 <?php $no = 1;
                 $nilai = 0;
-                foreach ($matriksPerbandingan as $keyMatriks => $valuematriksPerbandingan) {
-                    $pasangan = unserialize($valuematriksPerbandingan['pasangan']);
-
-                ?>
+                    foreach ($listKriteria as $listKriterias) {
+                    ?>
                     <tr>
                         <td><?= $no ?></td>
-                        <td><?= $listKriteria[$keyMatriks]['kriteria'] ?></td>
-                        <?php
-                        foreach ($pasangan as $valuePasangan) { ?>
-                            <td><?= array_values($valuePasangan)[0] ?></td>
-
-                        <?php }
+                        <td><?= $listKriterias['kriteria'] ?></td>
+                        <?php 
+                            $dataMatrix = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kiri' => $listKriterias['id']])->asArray()->all();
+                            foreach ($dataMatrix as $valuedataMatrix) {
                         ?>
+                        <td><?= $valuedataMatrix['value'] ?></td>
+                        <?php } ?>
+
                     </tr>
                 <?php $no++;
-                } ?>
+                    }
+                ?>
                 <tr>
                     <td></td>
                     <td style="font-weight:bold; color:#333;">Jumlah</td>

@@ -163,89 +163,78 @@ class PerbandinganKriteriaController extends Controller
 
     public function pairwiseComparation($skala, $listKriteria, $selectedDataAlternatif)
     {
-        $model = MatriksPerbandinganBerpasangan::find()->where(['id_alternatif' => $selectedDataAlternatif])->asArray()->all();
-
-        //reformat loop list kriteria
+        $listKriteria = $this->listKriteria();
+        $jmlKriteria  = count($listKriteria);
         $newListKriteria = [];
-        $jmlKriteria = count($listKriteria);
-        foreach ($listKriteria as $keys => $valueListKriteria) {
+        foreach ($listKriteria as $key => $valuelistKriteria) {
             for ($i = 0; $i < $jmlKriteria; $i++) {
-                $newListKriteria[$keys][$i]['kiri'] = $valueListKriteria;
-                $newListKriteria[$keys][$i]['kanan'] = $listKriteria[$i];
+                $newListKriteria[$key][$i]['kiri'] = $valuelistKriteria;
+                $newListKriteria[$key][$i]['kanan'] = $listKriteria[$i];
             }
         }
-        $kriteriaKiri = 0;
-        $dataToSave = [];
-        foreach ($newListKriteria as $key => $valueNewListKriteria) {
-            $pasangan = [];
-            $temp['id_alternatif'] = $selectedDataAlternatif;
-            foreach ($valueNewListKriteria as $keyValue => $listKriteriaValue) {
-                $temp['id_kriteria'] = $listKriteriaValue['kiri']['id'];
-                $temp['pasangan'][$keyValue] = $listKriteriaValue;
 
-                // foreach ($skala as $keySkala => $valueSkala) {
-                //     if ($listKriteriaValue['kiri']['id'] == $listKriteriaValue['kanan']['id']){
-                //         $pasangan[$keyValue] = [$listKriteriaValue['kiri']['id'] . "-" . $listKriteriaValue['kanan']['id'] => 1];
-                //     } elseif(($listKriteriaValue['kiri']['id'] == $valueSkala['kiri']['id']) && ($listKriteriaValue['kanan']['id'] == $valueSkala['kanan']['id'])) {
-                //         $pasangan[$keyValue] = [$listKriteriaValue['kiri']['id'] . "-" . $listKriteriaValue['kanan']['id'] => intval($valueSkala['value_bobot'])];
-                //     // } else {
-                //         // $pasangan[$keyValue] = [$listKriteriaValue['kiri']['id'] . "-" . $listKriteriaValue['kanan']['id'] => 9];
-                //         // echo "<pre>";
-                //         // print_r($pasangan);
-                //     }
-
-                // }
-
-            }
-            array_push($dataToSave, $temp);
-        }
-
-        $newDataToSave = [];
-        $pasangan = [];
-
-        foreach ($dataToSave as $k => $value) {
-            $newDataToSave[$k]['id_kriteria'] = $value['id_kriteria'];
-            $newDataToSave[$k]['id_alternatif'] = $value['id_alternatif'];
-
-            foreach ($value['pasangan'] as $a => $valueDataToSave) {
-                foreach ($skala as $keySkala => $valueSkala) {
-                    
-                    if ($valueDataToSave['kiri']['id'] == $valueDataToSave['kanan']['id']) {
-                        $newDataToSave[$k]['pasangan'][$a] = [$valueDataToSave['kiri']['id'] . "-" . $valueDataToSave['kanan']['id'] => 1];
-                    }
-                    if(($valueSkala['kiri']['id'] == $valueDataToSave['kiri']['id']) && ($valueSkala['kanan']['id'] == $valueDataToSave['kanan']['id'])){
-                        $newDataToSave[$k]['pasangan'][$a] = [$valueDataToSave['kiri']['id'] . "-" . $valueDataToSave['kanan']['id'] => $valueSkala['value_bobot']];
-                    }
-                    // if($valueSkala['kiri']['id'] != $valueSkala['kanan']['id']){
-                    //     $newDataToSave[$k]['pasangan'][$a] = [$valueDataToSave['kiri']['id'] . "-" . $valueDataToSave['kanan']['id'] => $valueSkala['value_bobot']];
-                    // }
-                    // } elseif(($valueSkala['kiri']['id'] == $valueDataToSave['kiri']['id']) == ($valueSkala['kanan']['id'] == $valueDataToSave['kanan']['id'])) {
-                    //     $newDataToSave[$k]['pasangan'][$a] = [$valueDataToSave['kiri']['id'] . "-" . $valueDataToSave['kanan']['id'] => 0];
-                    // }
-
+        $matriks = [];
+        $kebalikan = [];
+        foreach ($newListKriteria as $keynewListKriteria => $valuenewListKriteria) {
+            foreach ($valuenewListKriteria as $keyvaluenewListKriteria => $valuenewListKriterias) {
+                $value = 0;
+                if ($valuenewListKriterias['kiri']['id'] == $valuenewListKriterias['kanan']['id']) {
+                    $value = 1;
                 }
+
+                foreach ($skala as $valueSkala) {
+                    if ($valueSkala['kiri']['id'] == $valuenewListKriterias['kiri']['id'] && $valueSkala['kanan']['id'] == $valuenewListKriterias['kanan']['id']) {
+                        if ($valueSkala['value_bobot'] < 0) {
+                            $valuenewListKriterias['kiri']['id']  =  $valueSkala['kanan']['id'];
+                            $valuenewListKriterias['kanan']['id']  =  $valueSkala['kiri']['id'];
+                            $value = abs($valueSkala['value_bobot']);
+                            $kebalikan['pasangan'] = $valuenewListKriterias;
+                            $kebalikan['value_bobot'] = $value;
+                        } else {
+                            $value = $valueSkala['value_bobot'];
+                        }
+                    } elseif($valueSkala['kiri']['id'] == $valuenewListKriterias['kanan']['id'] && $valueSkala['kanan']['id'] == $valuenewListKriterias['kiri']['id']){
+                        $value = 1 / abs($valueSkala['value_bobot']);
+
+                    }
+                }
+
+                if ($value == 0) {
+                    if ($kebalikan != NULL) {
+                        if (($kebalikan['pasangan']['kiri']['id'] == $valuenewListKriterias['kiri']['id']) && ($kebalikan['pasangan']['kanan']['id'] == $valuenewListKriterias['kanan']['id'])) {
+                            $valuenewListKriterias['kiri']['id']  =  $kebalikan['pasangan']['kanan']['id'];
+                            $valuenewListKriterias['kanan']['id']  =  $kebalikan['pasangan']['kiri']['id'];
+                            $value = 1 / abs($kebalikan['value_bobot']);
+                            $kebalikan = [];
+                        }
+                    }
+                }
+                $temp = [
+                    'id_alternatif'     => $selectedDataAlternatif,
+                    'id_kriteria_kiri'  => $valuenewListKriterias['kiri']['id'],
+                    'id_kriteria_kanan' => $valuenewListKriterias['kanan']['id'],
+                    'value'             => $value,
+                ];
+                array_push($matriks, $temp);
             }
         }
-        echo "<pre>";
-        print_r($newDataToSave);
-
-        die(json_encode(''));
-
+        echo"<pre>";die(json_encode($matriks));
+        $model = MatriksPerbandinganBerpasangan::find()->where(['id_alternatif' => $selectedDataAlternatif])->asArray()->all();
         if ($model) {
-            foreach ($model as $valueModel) {
+            foreach ($model as $key => $valueModel) {
                 $modelValue = MatriksPerbandinganBerpasangan::find()->where(['id_alternatif' => $selectedDataAlternatif])->andWhere(['id' => $valueModel['id']])->one();
-                $modelValue->pasangan = $valueModel['pasangan'];
+                $modelValue->value = $matriks[$key]['value'];
                 $modelValue->save();
             }
-            $dataToSave = $model;
+
         } else {
             Yii::$app->db->createCommand()->batchInsert(
                 'matriks_perbandingan_berpasangan',
-                ['id_kriteria', 'id_alternatif', 'pasangan'],
-                $dataToSave
+                ['id_alternatif', 'id_kriteria_kiri', 'id_kriteria_kanan', 'value'],
+                $matriks
             )->execute();
         }
 
-        return $dataToSave;
+        return $matriks;
     }
 }

@@ -15,8 +15,9 @@ class m200724_174448_create_matriks_perbandingan_berpasangan_table extends Migra
         $this->createTable('{{%matriks_perbandingan_berpasangan}}', [
             'id' => $this->primaryKey(),
             'id_alternatif' => $this->integer(),
-            'id_kriteria' => $this->integer(),
-            'pasangan' => $this->string(255),
+            'id_kriteria_kiri' => $this->integer(),
+            'id_kriteria_kanan' => $this->integer(),
+            'value' => $this->string(255),
         ]);
     }
 

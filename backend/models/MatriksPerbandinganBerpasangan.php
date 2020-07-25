@@ -9,8 +9,9 @@ use Yii;
  *
  * @property int $id
  * @property int|null $id_alternatif
- * @property int|null $id_kriteria
- * @property string|null $pasangan
+ * @property int|null $id_kriteria_kiri
+ * @property int|null $id_kriteria_kanan
+ * @property string|null $value
  */
 class MatriksPerbandinganBerpasangan extends \yii\db\ActiveRecord
 {
@@ -28,8 +29,8 @@ class MatriksPerbandinganBerpasangan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_alternatif', 'id_kriteria'], 'integer'],
-            [['pasangan'], 'string', 'max' => 255],
+            [['id_alternatif', 'id_kriteria_kiri', 'id_kriteria_kanan'], 'integer'],
+            [['value'], 'string', 'max' => 255],
         ];
     }
 
@@ -41,8 +42,9 @@ class MatriksPerbandinganBerpasangan extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'id_alternatif' => 'Id Alternatif',
-            'id_kriteria' => 'Id Kriteria',
-            'pasangan' => 'Pasangan',
+            'id_kriteria_kiri' => 'Id Kriteria Kiri',
+            'id_kriteria_kanan' => 'Id Kriteria Kanan',
+            'value' => 'Value',
         ];
     }
 }
