@@ -40,7 +40,7 @@ use yii\helpers\Html;
 
                         <tr>
                             <td>
-                                <input type="hidden" name="id_nilai_pasangan[]" value=<?= $values['id_nilai_pasangan']?>>
+                                <input type="hidden" name="id_nilai_pasangan[]" value=<?= $values['id_nilai_pasangan'] ?>>
                                 <?= $no; ?> </td>
                             <td><?= $values['kiri']['kriteria'] ?></td>
                             <td style="text-align:center;">
@@ -49,15 +49,15 @@ use yii\helpers\Html;
 
                                 foreach ($values['bobot'] as $keyBobot => $bobot) {
                                     $checked = "";
-                                    if ($bobot == $values['value_bobot']) {
+                                    if ($keyBobot == $values['value_bobot']) {
                                         $checked = "checked";
                                     }
                                     $label = $values['id_nilai_pasangan'];
                                 ?>
 
-                                    <input class="flat" type="radio" id=<?= $label ?> name=<?= $label ?> value=<?= $bobot ?> <?= $checked ?> required>
+                                    <input class="flat" type="radio" id=<?= $label ?> name=<?= $label ?> value=<?= $keyBobot ?> <?= $checked ?> required>
                                     <label for=<?= $label ?>><?= $bobot ?></label>
-                                <?php   }
+                                <?php   };
                                 ?>
                             </td>
                             <td><?= $values['kanan']['kriteria'] ?></td>
@@ -68,8 +68,49 @@ use yii\helpers\Html;
 
                 </tbody>
             </table>
-            <input type="submit" name="submit" value="SIMPAN DATA" class="btn-primary">
+            <input type="submit" name="submit" value="SIMPAN DATA" class="btn btn-primary">
         </form>
+        <hr>
+        <h3 style="text-align:left; font-size:16px; margin-bottom:10px; font-weight:bold;">Matriks Perbandingan Berpasangan</h3>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th width="3%">No.</th>
+                    <th>Kriteria</th>
+                    <?php foreach ($listKriteria as $listKriterias) { ?>
+                        <th><?= $listKriterias['kriteria'] ?></th>
+                    <?php } ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $no = 1;
+                $nilai = 0;
+                foreach ($matriksPerbandingan as $keyMatriks => $valuematriksPerbandingan) {
+                    $pasangan = unserialize($valuematriksPerbandingan['pasangan']);
+
+                ?>
+                    <tr>
+                        <td><?= $no ?></td>
+                        <td><?= $listKriteria[$keyMatriks]['kriteria'] ?></td>
+                        <?php
+                        foreach ($pasangan as $valuePasangan) { ?>
+                            <td><?= array_values($valuePasangan)[0] ?></td>
+
+                        <?php }
+                        ?>
+                    </tr>
+                <?php $no++;
+                } ?>
+                <tr>
+                    <td></td>
+                    <td style="font-weight:bold; color:#333;">Jumlah</td>
+                    <td style="font-weight:bold; color:#333;">1,44</td>
+                    <td style="font-weight:bold; color:#333;">10,33</td>
+                    <td style="font-weight:bold; color:#333;">19,22</td>
+                    <td style="font-weight:bold; color:#333;">28,11</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <script>
