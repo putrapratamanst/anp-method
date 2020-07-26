@@ -72,7 +72,7 @@ use yii\helpers\Html;
             <input type="submit" name="submit" value="SIMPAN DATA" class="btn btn-primary">
         </form>
         <hr>
-        <h3 style="text-align:left; font-size:16px; margin-bottom:10px; font-weight:bold;">Matriks Perbandingan Berpasangan</h3>
+        <h3 style="text-align:left; font-size:16px; margin-bottom:10px; font-weight:bold;">Matriks Perbandingan Berpasangan, Eigen & Rasio Konsistensi</h3>
         <table class="table table-bordered table-hover table-striped">
             <thead>
                 <tr>
@@ -106,9 +106,10 @@ use yii\helpers\Html;
                         <td>
                             <?php
                             $eigen = 0;
-                            foreach ($dataMatrix as $valuedataMatrix) {
-                                $sum = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $listKriterias['id']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
-                                $eigen += $valuedataMatrix['value'] / $sum;
+                            foreach ($dataMatrix as $valuedataMatrixd) {
+                                $sum = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $valuedataMatrixd['id_kriteria_kanan']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
+
+                                $eigen += $valuedataMatrixd['value'] / $sum;
                             }
 
                             $totalEigen += $eigen / $jmlKriteria;
@@ -117,15 +118,18 @@ use yii\helpers\Html;
                         </td>
                         <td>
                             <?php
-                            foreach ($dataMatrix as $valuedataMatrix) {
-                                $sum = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $listKriterias['id']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
-                                $eigen += $valuedataMatrix['value'] / $sum;
+                            $eigenRasio = 0;
+                            $sum1 = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $listKriterias['id']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
 
+                            foreach ($dataMatrix as $valuedataMatrixs) {
+                                $sum = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $valuedataMatrixs['id_kriteria_kanan']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
+                                $eigenRasio += $valuedataMatrixs['value'] / $sum;
                             }
-                                $dataEigen = $eigen / $jmlKriteria;
 
-                                $rasioKonsistensi += $dataEigen * $sum;
-                                echo $dataEigen * $sum;
+                            $dataEigen = $eigenRasio / $jmlKriteria;
+
+                            $rasioKonsistensi += $dataEigen * $sum1;
+                            echo $dataEigen * $sum1;
                             ?>
 
                         </td>
@@ -147,6 +151,60 @@ use yii\helpers\Html;
                 </tr>
             </tbody>
         </table>
+
+        <h3 style="text-align:left; font-size:16px; margin-bottom:10px; font-weight:bold;">Cek Konsistensi</h3>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th colspan="2">Hasil Cek Nilai Konsistensi
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>&lambda; max</td>
+                    <td>
+                        <?php
+                        $eigenRasioCekKonsistensi = 0;
+                        foreach ($listKriteria as $listKriteriass) {
+                            $eigenRasioCek = 0;
+                            $dataMatrixs = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kiri' => $listKriteriass['id']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->asArray()->all();
+                            $sum1cek = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $listKriteriass['id']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
+                            foreach ($dataMatrixs as $valuedataMatrixss) {
+                                $sumcek = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $valuedataMatrixss['id_kriteria_kanan']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
+                                $eigenRasioCek += $valuedataMatrixss['value'] / $sumcek;
+                            }
+
+                            // echo $eigenRasioCek / $jmlKriteria;
+                            // echo"<br>";
+                            $eigenRasioCekKonsistensi += $eigenRasioCek / $jmlKriteria * $sum1cek;
+                        }
+
+                        echo $eigenRasioCekKonsistensi;
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>CI</td>
+                    <td><?= ($eigenRasioCekKonsistensi - $jmlKriteria) / ($jmlKriteria - 1) ?></td>
+                </tr>
+                <tr>
+                    <td>CR</td>
+                    <td><?php  
+                    $cr = (($eigenRasioCekKonsistensi - $jmlKriteria) / ($jmlKriteria - 1)) / 0.9;
+                    echo $cr;
+                    if($cr > 0.1 ){
+                        echo " <b>(TIDAK KONSISTEN)</b>";
+                    } else {
+                        echo " <b>(KONSISTEN)</b>";
+                    }
+                    ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 </div>
 <script>
