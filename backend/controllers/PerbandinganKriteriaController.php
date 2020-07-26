@@ -142,11 +142,11 @@ class PerbandinganKriteriaController extends Controller
     public function actionProsesUpdate()
     {
         $post = Yii::$app->request->post();
+ 
         foreach ($post['id_nilai_pasangan'] as $key => $value) {
             $detail = $this->detailBandingKriteria($value);
-            $update = $this->updateBandingKriteria($detail, $post[$value]);
+            $this->updateBandingKriteria($detail, $post[$value]);
         }
-
         return $this->redirect('banding-kriteria');
     }
 
@@ -157,8 +157,39 @@ class PerbandinganKriteriaController extends Controller
 
     public function updateBandingKriteria($model, $value)
     {
-        $model->value = $value;
+        if ($value > 1) {
+            if($model->value > 1)
+            {
+                $model->value = $value;
+            } else {
+                $kanan = $model->id_kriteria_kanan;
+                $kiri  = $model->id_kriteria_kiri;
+
+                $model->id_kriteria_kiri  = $kanan;
+                $model->id_kriteria_kanan = $kiri;
+                $model->value = $value;
+            }
+        }
+
+        if($value < 1) {
+            if($model->value > 1){
+                $kanan = $model->id_kriteria_kanan;
+                $kiri  = $model->id_kriteria_kiri;
+
+                $model->id_kriteria_kiri  = $kanan;
+                $model->id_kriteria_kanan = $kiri;
+                $model->value = $value;
+            } else {
+                $model->value = $value;
+            }
+        }
+        if($value == 1) {
+            $model = $model;
+            $model->value = $value;
+        }
+        
         $model->save();
+
     }
 
     public function pairwiseComparation($skala, $listKriteria, $selectedDataAlternatif)
@@ -183,50 +214,70 @@ class PerbandinganKriteriaController extends Controller
                 }
 
                 foreach ($skala as $valueSkala) {
+
                     if ($valueSkala['kiri']['id'] == $valuenewListKriterias['kiri']['id'] && $valueSkala['kanan']['id'] == $valuenewListKriterias['kanan']['id']) {
                         if ($valueSkala['value_bobot'] < 0) {
-                            $valuenewListKriterias['kiri']['id']  =  $valueSkala['kanan']['id'];
-                            $valuenewListKriterias['kanan']['id']  =  $valueSkala['kiri']['id'];
                             $value = abs($valueSkala['value_bobot']);
-                            $kebalikan['pasangan'] = $valuenewListKriterias;
-                            $kebalikan['value_bobot'] = $value;
+                            // $valuenewListKriterias['kiri']['id']  =  $valueSkala['kanan']['id'];
+                            // $valuenewListKriterias['kanan']['id']  =  $valueSkala['kiri']['id'];
+
+                            // $kebalikan['pasangan'] = $valuenewListKriterias;
+                            // $kebalikan['value_bobot'] = $value;
                         } else {
+
                             $value = $valueSkala['value_bobot'];
                         }
-                    } elseif($valueSkala['kiri']['id'] == $valuenewListKriterias['kanan']['id'] && $valueSkala['kanan']['id'] == $valuenewListKriterias['kiri']['id']){
-                        $value = 1 / abs($valueSkala['value_bobot']);
-
+                    } elseif ($valueSkala['kiri']['id'] == $valuenewListKriterias['kanan']['id'] && $valueSkala['kanan']['id'] == $valuenewListKriterias['kiri']['id']) {
+                        if (!empty($kebalikan)) {
+                            if (($kebalikan['pasangan']['kiri']['id'] == $valuenewListKriterias['kiri']['id']) && ($kebalikan['pasangan']['kanan']['id'] == $valuenewListKriterias['kanan']['id'])) {
+                                $valuenewListKriterias['kiri']['id']   =  $kebalikan['pasangan']['kanan']['id'];
+                                $valuenewListKriterias['kanan']['id']  =  $kebalikan['pasangan']['kiri']['id'];
+                                $value = 1 / abs($kebalikan['value_bobot']);
+                            } 
+                        } else {
+                            $value = 1 / abs($valueSkala['value_bobot']);
+                        }
                     }
                 }
 
                 if ($value == 0) {
-                    if ($kebalikan != NULL) {
-                        if (($kebalikan['pasangan']['kiri']['id'] == $valuenewListKriterias['kiri']['id']) && ($kebalikan['pasangan']['kanan']['id'] == $valuenewListKriterias['kanan']['id'])) {
-                            $valuenewListKriterias['kiri']['id']  =  $kebalikan['pasangan']['kanan']['id'];
-                            $valuenewListKriterias['kanan']['id']  =  $kebalikan['pasangan']['kiri']['id'];
-                            $value = 1 / abs($kebalikan['value_bobot']);
-                            $kebalikan = [];
-                        }
+                    if ($kebalikan) {
+                        // echo "<pre>";
+                        // print_r($valuenewListKriterias);
+
+                        // $value = 1 / abs($kebalikan['value_bobot']);
+                    } else {
+                        // $value = 1 / abs($kebalikan['value_bobot']);
+
+                        // echo"<pre>";print_r($valuenewListKriterias);
                     }
                 }
                 $temp = [
                     'id_alternatif'     => $selectedDataAlternatif,
                     'id_kriteria_kiri'  => $valuenewListKriterias['kiri']['id'],
                     'id_kriteria_kanan' => $valuenewListKriterias['kanan']['id'],
-                    'value'             => $value,
+                    'value'             => (string)$value,
                 ];
                 array_push($matriks, $temp);
             }
         }
-        echo"<pre>";die(json_encode($matriks));
+
         $model = MatriksPerbandinganBerpasangan::find()->where(['id_alternatif' => $selectedDataAlternatif])->asArray()->all();
+
         if ($model) {
             foreach ($model as $key => $valueModel) {
-                $modelValue = MatriksPerbandinganBerpasangan::find()->where(['id_alternatif' => $selectedDataAlternatif])->andWhere(['id' => $valueModel['id']])->one();
+                $modelValue = MatriksPerbandinganBerpasangan::find()->where(['id_alternatif' => $selectedDataAlternatif])
+                    ->andWhere(['id_kriteria_kiri' => $valueModel['id_kriteria_kiri']])
+                    ->andWhere(['id_kriteria_kanan' => $valueModel['id_kriteria_kanan']])
+                    ->one();
+               
+
                 $modelValue->value = $matriks[$key]['value'];
                 $modelValue->save();
+                // if (!$modelValue->save()) {
+                //     die(json_encode($modelValue->errors));
+                // };
             }
-
         } else {
             Yii::$app->db->createCommand()->batchInsert(
                 'matriks_perbandingan_berpasangan',

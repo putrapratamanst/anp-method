@@ -81,34 +81,69 @@ use yii\helpers\Html;
                     <?php foreach ($listKriteria as $listKriterias) { ?>
                         <th><?= $listKriterias['kriteria'] ?></th>
                     <?php } ?>
+                    <th>Eigen Vector</th>
+                    <th>Rasio Konsistensi</th>
+
                 </tr>
             </thead>
             <tbody>
                 <?php $no = 1;
                 $nilai = 0;
-                    foreach ($listKriteria as $listKriterias) {
-                    ?>
+                $jmlKriteria = count($listKriteria);
+                $totalEigen = 0;
+                $rasioKonsistensi = 0;
+                foreach ($listKriteria as $listKriterias) {
+                ?>
                     <tr>
                         <td><?= $no ?></td>
                         <td><?= $listKriterias['kriteria'] ?></td>
-                        <?php 
-                            $dataMatrix = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kiri' => $listKriterias['id']])->asArray()->all();
-                            foreach ($dataMatrix as $valuedataMatrix) {
+                        <?php
+                        $dataMatrix = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kiri' => $listKriterias['id']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->asArray()->all();
+                        foreach ($dataMatrix as $valuedataMatrix) {
                         ?>
-                        <td><?= $valuedataMatrix['value'] ?></td>
+                            <td><?= round($valuedataMatrix['value'], 2) ?></td>
                         <?php } ?>
+                        <td>
+                            <?php
+                            $eigen = 0;
+                            foreach ($dataMatrix as $valuedataMatrix) {
+                                $sum = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $listKriterias['id']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
+                                $eigen += $valuedataMatrix['value'] / $sum;
+                            }
+
+                            $totalEigen += $eigen / $jmlKriteria;
+                            echo $eigen / $jmlKriteria;
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            foreach ($dataMatrix as $valuedataMatrix) {
+                                $sum = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $listKriterias['id']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
+                                $eigen += $valuedataMatrix['value'] / $sum;
+
+                            }
+                                $dataEigen = $eigen / $jmlKriteria;
+
+                                $rasioKonsistensi += $dataEigen * $sum;
+                                echo $dataEigen * $sum;
+                            ?>
+
+                        </td>
 
                     </tr>
                 <?php $no++;
-                    }
+                }
                 ?>
                 <tr>
                     <td></td>
                     <td style="font-weight:bold; color:#333;">Jumlah</td>
-                    <td style="font-weight:bold; color:#333;">1,44</td>
-                    <td style="font-weight:bold; color:#333;">10,33</td>
-                    <td style="font-weight:bold; color:#333;">19,22</td>
-                    <td style="font-weight:bold; color:#333;">28,11</td>
+                    <?php foreach ($listKriteria as $listKriterias) {
+                        $sum = MatriksPerbandinganBerpasangan::find()->where(['id_kriteria_kanan' => $listKriterias['id']])->andWhere(['id_alternatif' => $selectedDataAlternatif])->sum('value');
+                    ?>
+                        <td style="font-weight:bold; color:#333;"><?= $sum; ?></td>
+                    <?php } ?>
+                    <td><?= $totalEigen ?></td>
+                    <td><?= $rasioKonsistensi ?></td>
                 </tr>
             </tbody>
         </table>
