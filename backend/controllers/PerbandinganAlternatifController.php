@@ -147,7 +147,7 @@ class PerbandinganAlternatifController extends Controller
             $detail = $this->detailBandingAlternatif($value);
             $this->updateBandingAlternatif($detail, $post[$value]);
         }
-        return $this->redirect('banding-kriteria');
+        return $this->redirect('banding-alternatif');
     }
 
     public function detailBandingAlternatif($id)
@@ -162,22 +162,22 @@ class PerbandinganAlternatifController extends Controller
             {
                 $model->value = $value;
             } else {
-                $kanan = $model->id_kriteria_kanan;
+                $kanan = $model->id_alternatif_kanan;
                 $kiri  = $model->id_alternatif_kiri;
 
                 $model->id_alternatif_kiri  = $kanan;
-                $model->id_kriteria_kanan = $kiri;
+                $model->id_alternatif_kanan = $kiri;
                 $model->value = $value;
             }
         }
 
         if($value < 1) {
             if($model->value > 1){
-                $kanan = $model->id_kriteria_kanan;
+                $kanan = $model->id_alternatif_kanan;
                 $kiri  = $model->id_alternatif_kiri;
 
                 $model->id_alternatif_kiri  = $kanan;
-                $model->id_kriteria_kanan = $kiri;
+                $model->id_alternatif_kanan = $kiri;
                 $model->value = $value;
             } else {
                 $model->value = $value;
