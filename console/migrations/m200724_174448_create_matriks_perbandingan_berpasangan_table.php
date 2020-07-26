@@ -5,6 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%matriks_perbandingan_berpasangan}}`.
  */
+//banding-kriteria
 class m200724_174448_create_matriks_perbandingan_berpasangan_table extends Migration
 {
     /**
