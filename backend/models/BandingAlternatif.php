@@ -29,8 +29,7 @@ class BandingAlternatif extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_kriteria', 'id_alternatif_kiri', 'id_alternatif_kanan'], 'integer'],
-            [['value'], 'string', 'max' => 255],
+            [['id_kriteria', 'id_alternatif_kiri', 'id_alternatif_kanan', 'value'], 'integer'],
         ];
     }
 

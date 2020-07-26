@@ -124,4 +124,9 @@ class BiodataController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    public static function detailById($id)
+    {
+        return Biodata::find()->where(['id' => $id])->asArray()->one();
+    }
+
 }

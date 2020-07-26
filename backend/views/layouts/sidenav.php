@@ -29,23 +29,23 @@ $user = Yii::$app->user->identity;
             <div class="menu_section">
                 <h3>Menu</h3>
                 <ul class="nav side-menu">
-                        <li><a href="/biodata"><i class="fa fa-list"></i> Data Dosen </a></li>
-                        <li><a href="/jabatan"><i class="fa fa-pencil"></i> Data Jabatan </a></li>
-                        <li><a href="/jurusan"><i class="fa fa-gear"></i> Data Jurusan </a></li>
-                        <li><a href="/prodi"><i class="fa fa-eye"></i> Data Prodi </a></li>
+                    <li><a href="/biodata"><i class="fa fa-list"></i> Data Dosen </a></li>
+                    <li><a href="/jabatan"><i class="fa fa-pencil"></i> Data Jabatan </a></li>
+                    <li><a href="/jurusan"><i class="fa fa-gear"></i> Data Jurusan </a></li>
+                    <li><a href="/prodi"><i class="fa fa-eye"></i> Data Prodi </a></li>
                     <!-- 
                         <li><a href="/delivery/create"><i class="fa fa-pencil"></i> INPUT KIRIMAN </a></li>
                         <li><a href="/delivery/export"><i class="fa fa-print"></i> LAPORAN </a></li>
                         <li><a href="/site/logout"><i class="fa fa-gear"></i> LOGOUT </a></li> -->
-                     <li><a><i class="fa fa-edit"></i> ANP <span class="fa fa-chevron-down"></span></a> 
-                     <ul class="nav child_menu">
-                                <li><a href="/kriteria">Data Kriteria</a></li>
-                                <li><a href="/biodata">Data Alternatif</a></li>
-                                <li><a href="/perbandingan-kriteria/banding-kriteria">Perbandingan Kriteria</a></li>
-                                <li><a href="/biodata">Perbandingan Alternatif</a></li>
-                                <li><a href="/biodata">Hasil Perhitungan</a></li>
-                            </ul>
-                        </li> 
+                    <li><a><i class="fa fa-edit"></i> ANP <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="/kriteria">Data Kriteria</a></li>
+                            <li><a href="/biodata">Data Alternatif</a></li>
+                            <li><a href="/perbandingan-kriteria/banding-kriteria">Perbandingan Kriteria</a></li>
+                            <li><a href="/perbandingan-alternatif/banding-alternatif">Perbandingan Alternatif</a></li>
+                            <li><a href="/biodata">Hasil Perhitungan</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
