@@ -43,7 +43,7 @@ $user = Yii::$app->user->identity;
                             <li><a href="/biodata">Data Alternatif</a></li>
                             <li><a href="/perbandingan-kriteria/banding-kriteria">Perbandingan Kriteria</a></li>
                             <li><a href="/perbandingan-alternatif/banding-alternatif">Perbandingan Alternatif</a></li>
-                            <li><a href="/biodata">Hasil Perhitungan</a></li>
+                            <li><a href="/hasil/hasil-perhitungan">Hasil Perhitungan</a></li>
                         </ul>
                     </li>
                 </ul>

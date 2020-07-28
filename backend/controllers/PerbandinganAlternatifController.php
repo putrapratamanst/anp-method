@@ -147,7 +147,7 @@ class PerbandinganAlternatifController extends Controller
             $detail = $this->detailBandingAlternatif($value);
             $this->updateBandingAlternatif($detail, $post[$value]);
         }
-        return $this->redirect('banding-alternatif');
+        return $this->redirect(['banding-alternatif','id'=>$post['idKriteria']]);
     }
 
     public function detailBandingAlternatif($id)
