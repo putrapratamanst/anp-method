@@ -1,5 +1,7 @@
 <?php
 
+use backend\helpers\Constant;
+use backend\models\Eigen;
 use backend\models\MatriksPerbandinganBerpasangan;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -24,6 +26,7 @@ use yii\helpers\Html;
             </div>
         </div>
         <form action="proses-update" method="post">
+            <input type="hidden" name="idAlternatif" value="<?= $selectedDataAlternatif?>">
 
             <table class="table table-bordered table-hover table-striped">
                 <thead>
@@ -113,6 +116,29 @@ use yii\helpers\Html;
                             }
 
                             $totalEigen += $eigen / $jmlKriteria;
+
+
+                            $modelEigen = Eigen::find()->where(['id_penampung' => $selectedDataAlternatif])
+                                ->andWhere(['id_alternatif_kriteria' => $listKriterias['id']])
+                                ->andWhere(['type' => Constant::TYPE_KRITERIA])->one();
+                            if (!$modelEigen) {
+                                $model = new Eigen();
+                                $model->id_penampung = $selectedDataAlternatif;
+                                $model->id_alternatif_kriteria = $listKriterias['id'];
+                                $model->eigen = $eigen / $jmlKriteria;
+                                $model->type = (string)Constant::TYPE_KRITERIA;
+                                if (!$model->save()) {
+                                    die(json_encode($model->errors));
+                                }
+                            } else {
+                                if ($modelEigen['eigen'] != $eigen / $jmlKriteria) {
+                                    $modelEigen->eigen = $eigen / $jmlKriteria;
+                                    if (!$modelEigen->save()) {
+                                        die(json_encode($modelEigen->errors));
+                                    }
+                                }
+                            }
+
                             echo $eigen / $jmlKriteria;
                             ?>
                         </td>
@@ -191,15 +217,15 @@ use yii\helpers\Html;
                 </tr>
                 <tr>
                     <td>CR</td>
-                    <td><?php  
-                    $cr = (($eigenRasioCekKonsistensi - $jmlKriteria) / ($jmlKriteria - 1)) / 0.9;
-                    echo $cr;
-                    if($cr > 0.1 ){
-                        echo " <b>(TIDAK KONSISTEN)</b>";
-                    } else {
-                        echo " <b>(KONSISTEN)</b>";
-                    }
-                    ?>
+                    <td><?php
+                        $cr = (($eigenRasioCekKonsistensi - $jmlKriteria) / ($jmlKriteria - 1)) / 0.9;
+                        echo $cr;
+                        if ($cr > 0.1) {
+                            echo " <b>(TIDAK KONSISTEN)</b>";
+                        } else {
+                            echo " <b>(KONSISTEN)</b>";
+                        }
+                        ?>
                     </td>
                 </tr>
             </tbody>

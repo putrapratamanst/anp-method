@@ -142,12 +142,12 @@ class PerbandinganKriteriaController extends Controller
     public function actionProsesUpdate()
     {
         $post = Yii::$app->request->post();
- 
         foreach ($post['id_nilai_pasangan'] as $key => $value) {
             $detail = $this->detailBandingKriteria($value);
             $this->updateBandingKriteria($detail, $post[$value]);
         }
-        return $this->redirect('banding-kriteria');
+
+        return $this->redirect(['banding-kriteria','id' => $post['idAlternatif']]);
     }
 
     public function detailBandingKriteria($id)
