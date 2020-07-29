@@ -37,7 +37,7 @@ class Jabatan extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'nama' => 'Nama',
+            'nama' => 'Jabatan',
         ];
     }
 }

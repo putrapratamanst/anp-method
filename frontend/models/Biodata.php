@@ -59,12 +59,12 @@ class Biodata extends \yii\db\ActiveRecord
             'tanggal_lahir' => 'Tanggal Lahir',
             'jenis_kelamin' => 'Jenis Kelamin',
             'pendidikan' => 'Pendidikan',
-            'pangkat' => 'Pangkat',
+            'pangkat' => 'Status Dosen',
             'position' => 'Posisi',
             'work_unit' => 'Work Unit',
             'jabatan' => 'Jabatan',
             'prodi' => 'Prodi',
-            'jurusan' => 'Jurusan',
+            'jurusan' => 'Mata Kuliah',
         ];
     }
 

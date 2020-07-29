@@ -59,8 +59,11 @@ $jurusanList = ArrayHelper::map($jurusan, 'id', 'nama');
         ['s1' => 'S1', 's2' => 'S2', 's3' => 'S3'],
         ['prompt' => 'Pilih Pendidikan']
     ); ?>
+    <?= $form->field($model, 'pangkat')->dropDownList(
+        ['dosen_tetap' => 'Dosen Tetap']
+    ); ?>
 
-    <?= $form->field($model, 'pangkat')->textInput(['maxlength' => true]) ?>
+    <!-- <?= $form->field($model, 'pangkat')->textInput(['maxlength' => true]) ?> -->
 
     <?= $form->field($model, 'position')->textInput(['maxlength' => true]) ?>
 
