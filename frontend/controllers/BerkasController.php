@@ -80,7 +80,7 @@ class BerkasController extends Controller
         $biodata = Biodata::find()->where(['nama_lengkap' => $userName])->one();
         $model->biodata_id = $id;
         
-        if ($model->load(Yii::$app->request->post())&& $model->validate() ) {
+        if ($model->load(Yii::$app->request->post()) ) {
 
             $nama_berkas1 = UploadedFile::getInstance($model, 'nama_berkas1');
             $nama_berkas2 = UploadedFile::getInstance($model, 'nama_berkas2');
@@ -395,7 +395,8 @@ class BerkasController extends Controller
         $current22 = $model->nama_berkas22;
         $current23 = $model->nama_berkas23;
         $current24 = $model->nama_berkas24;
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        
+        if ($model->load(Yii::$app->request->post()) ) {
 
             $nama_berkas1 = UploadedFile::getInstance($model, 'nama_berkas1');
             $nama_berkas2 = UploadedFile::getInstance($model, 'nama_berkas2');
