@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\JurusanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Jurusan';
+$this->title = 'Matakuliah';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="x_panel">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?= Html::encode($this->title) ?></h1>
 
         <p>
-            <?= Html::a('Create Jurusan', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Create Matakuliah', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
 
         <?php // echo $this->render('_search', ['model' => $searchModel]); 

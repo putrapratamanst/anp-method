@@ -1,23 +1,24 @@
 <?php
 
-namespace backend\models;
+namespace frontend\models;
 
 use Yii;
 
 /**
- * This is the model class for table "jurusan".
+ * This is the model class for table "biodata_to_jurusan".
  *
  * @property int $id
- * @property string|null $nama
+ * @property int|null $id_user
+ * @property int|null $id_jurusan
  */
-class Jurusan extends \yii\db\ActiveRecord
+class BiodataToJurusan extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'jurusan';
+        return 'biodata_to_jurusan';
     }
 
     /**
@@ -26,7 +27,7 @@ class Jurusan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama'], 'string', 'max' => 255],
+            [['id_user', 'id_jurusan'], 'integer'],
         ];
     }
 
@@ -37,7 +38,8 @@ class Jurusan extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'nama' => 'Nama Matakuliah',
+            'id_user' => 'Id User',
+            'id_jurusan' => 'Id jurusan',
         ];
     }
 }
