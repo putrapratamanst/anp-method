@@ -39,7 +39,8 @@ class Biodata extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'jabatan', 'prodi', 'jurusan'], 'integer'],
+            [['user_id', 'jabatan', 'prodi'], 'integer'],
+            [['email'], 'email'],
             [['nama_lengkap', 'nip', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'pendidikan', 'pangkat', 'position', 'work_unit'], 'string', 'max' => 255],
             [['nama_lengkap','email', 'nip', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'pendidikan', 'pangkat', 'position', 'work_unit', 'jabatan', 'prodi', 'jurusan'], 'required'],
         ];
@@ -64,7 +65,7 @@ class Biodata extends \yii\db\ActiveRecord
             'work_unit' => 'Work Unit',
             'jabatan' => 'Jabatan',
             'prodi' => 'Prodi',
-            'jurusan' => 'Jurusan',
+            'jurusan' => 'Matakuliah',
         ];
     }
 

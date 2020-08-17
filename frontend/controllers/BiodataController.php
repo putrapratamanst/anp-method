@@ -6,6 +6,7 @@ use common\models\User;
 use Yii;
 use frontend\models\Biodata;
 use frontend\models\BiodataSearch;
+use frontend\models\BiodataToJurusan;
 use frontend\models\SignupForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -54,8 +55,15 @@ class BiodataController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $userData = User::findByUsername($model['nama_lengkap']);
+
+        $biodataToJurusan = BiodataToJurusan::find()->where(['id_user' => $userData->id])->all();
+       
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model'=>$model,
+            'biodataToJurusan'=>$biodataToJurusan
         ]);
     }
 
@@ -95,6 +103,15 @@ class BiodataController extends Controller
             $userData = User::findByUsername($post['nama_lengkap']);
 
             $model->user_id = $userData->id;
+
+            foreach ($post['jurusan'] as $keyJurusan => $valueJurusan) {
+                $biodataToJurusan = new BiodataToJurusan();
+                $biodataToJurusan->id_user = $userData->id;
+                $biodataToJurusan->id_jurusan = $valueJurusan;
+                $biodataToJurusan->save();
+            }
+            // $model->jurusan ini diabaikan
+
             if(!$model->save()){
                 $errorModel = "";
                 foreach ($model->errors as $key => $value) {
@@ -127,13 +144,31 @@ class BiodataController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $userData = User::findByUsername($model['nama_lengkap']);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $biodataToJurusan = BiodataToJurusan::find()->where(['id_user' => $userData->id])->all();
+       
+
+        if ($model->load(Yii::$app->request->post())) {
+            $post = Yii::$app->request->post()['Biodata'];
+            foreach ($biodataToJurusan as $value) {
+                $value->delete();
+            }
+
+            foreach ($post['jurusan'] as $valueJurusan) {
+                $biodataToJurusan = new BiodataToJurusan();
+                $biodataToJurusan->id_user = $userData->id;
+                $biodataToJurusan->id_jurusan = $valueJurusan;
+                $biodataToJurusan->save();
+            }
+
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'biodataToJurusan' => $biodataToJurusan,
         ]);
     }
 

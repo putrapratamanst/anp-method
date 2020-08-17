@@ -6,8 +6,8 @@ use frontend\models\Jurusan;
 use frontend\models\Prodi;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
+// use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Biodata */
 /* @var $form yii\widgets\ActiveForm */
@@ -76,14 +76,29 @@ $jurusanList = ArrayHelper::map($jurusan, 'id', 'nama');
         ['prompt' => 'Pilih Prodi']
     ); ?>
 
-    <?= $form->field($model, 'jurusan')->dropDownList(
-        $jurusanList,
-        ['prompt' => 'Pilih Jurusan']
-    ); ?>
+    <?php
+
+    if (!$model->isNewRecord) {
+
+        $checkedList = array_values(ArrayHelper::map($biodataToJurusan, 'id_jurusan', 'id_jurusan'));
+        $model->jurusan = $checkedList;
+
+        echo $form->field($model,'jurusan')->checkboxList($jurusanList)->label(FALSE);
+
+    } else {
+
+        echo $form->field($model, 'jurusan[]', ['checkboxTemplate' => "<div class=\"checkbox\">\n{input}
+        {beginLabel}\n{labelTitle}\n{endLabel}\n{error}\n{hint}\n</div>"])->checkboxList(
+            $jurusanList
+        );
+    }
+
+    
+    ?>
 
     <div class="form-group">
-        <?php if (!$model->isNewRecord) {?>
-        <?= Html::a('Back', ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+        <?php if (!$model->isNewRecord) { ?>
+            <?= Html::a('Back', ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
         <?php } ?>
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
