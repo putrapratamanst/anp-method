@@ -172,7 +172,6 @@ $listKriteria = PerbandinganKriteriaController::listKriteria();
                     <?php $Angka[$Angka_0][$Angka_1] = number_format($d_nilai['eigen'] * 1, 3);
                         $Angka_1++;
                     } ?>
-
                 </tr>
             <?php $Angka_0++;
             } ?>
@@ -240,10 +239,65 @@ $listKriteria = PerbandinganKriteriaController::listKriteria();
         }
     }
 
-    function tampilnormal($Angka, $Angka_0)
+    function save_matriks($Angka)
     {
-        for ($ix = 0; $ix <= $Angka_0; $ix++) {
-            //Print " | ".$Angka[$ix]." ";
+        $connection = Yii::$app->getDb();
+
+        $Angka_0a = 0;
+        $tampil_a = "SELECT a.id as id_alternatif_periode, a.nama_lengkap as alternatif, b.id as ids FROM biodata AS a, berkas AS b WHERE a.id = b.biodata_id ORDER BY a.id ASC";
+        $h_tampil_a = $connection->createCommand($tampil_a);
+        foreach ($h_tampil_a->queryAll() as $r) {
+
+            $Angka_1 = 0;
+            $h_node = $connection->createCommand("SELECT a.id as id_alternatif_periode, a.nama_lengkap as alternatif, b.id as ids FROM biodata AS a, berkas AS b WHERE a.id = b.biodata_id ORDER BY a.id ASC");
+            foreach ($h_node->queryAll() as $d_node) {
+                $cek_data = $connection->createCommand("SELECT COUNT(*) FROM anp_nilai_limit_s WHERE tipe=1 AND id_node_0='$d_node[id_alternatif_periode]' AND id_node='$r[id_alternatif_periode]'")->queryScalar();
+                if ($cek_data == 0) {
+                    $connection->createCommand("INSERT INTO anp_nilai_limit_s(tipe, id_node_0, id_node, nilai) VALUES (1, '$d_node[id_alternatif_periode]', '$r[id_alternatif_periode]', '" . $Angka[$Angka_0a][$Angka_1] . "')")->execute();
+                } else {
+                    $connection->createCommand("UPDATE anp_nilai_limit_s SET nilai='" . $Angka[$Angka_0a][$Angka_1] . "' WHERE  tipe=1 AND id_node_0='$d_node[id_alternatif_periode]' AND id_node='$r[id_alternatif_periode]'")->execute();
+                }
+                $Angka_1++;
+            }
+
+            $h_node = $connection->createCommand("SELECT id as id_kriteria, kriteria FROM kriteria ORDER BY id ASC");
+            foreach ($h_node->queryAll() as $d_node) {
+                $cek_data = $connection->createCommand("SELECT COUNT(*) FROM anp_nilai_limit_s WHERE tipe=2 AND id_node_0='$d_node[id_kriteria]' AND id_node='$r[id_alternatif_periode]'")->queryScalar();
+                if ($cek_data == 0) {
+                    $connection->createCommand("INSERT INTO anp_nilai_limit_s(tipe, id_node_0, id_node, nilai) VALUES (2, '$d_node[id_kriteria]', '$r[id_alternatif_periode]', '" . $Angka[$Angka_0a][$Angka_1] . "')")->execute();
+                } else {
+                    $connection->createCommand("UPDATE anp_nilai_limit_s SET nilai='" . $Angka[$Angka_0a][$Angka_1] . "' WHERE tipe=2 AND id_node_0='$d_node[id_kriteria]' AND id_node='$r[id_alternatif_periode]'")->execute();
+                }
+                $Angka_1++;
+            }
+            $Angka_0a++;
+        }
+
+        $tampil = "SELECT a.id as id_kriteria, a.kriteria FROM kriteria as a ORDER BY a.id ASC";
+        $h_tampil = $connection->createCommand($tampil);
+        foreach ($h_tampil->queryAll() as  $r) {
+            $Angka_1 = 0;
+            $h_node = $connection->createCommand("SELECT a.id as id_alternatif_periode, a.nama_lengkap as alternatif, b.id as ids FROM biodata AS a, berkas AS b WHERE a.id = b.biodata_id ORDER BY a.id ASC");
+            foreach ($h_node->queryAll() as $d_node) {
+                $cek_data = $connection->createCommand("SELECT COUNT(*) FROM anp_nilai_limit_s WHERE tipe=3 AND id_node_0='$d_node[id_alternatif_periode]' AND id_node='$r[id_kriteria]'")->queryScalar();
+                if ($cek_data == 0) {
+                    $connection->createCommand("INSERT INTO anp_nilai_limit_s(tipe, id_node_0, id_node, nilai) VALUES (3, '$d_node[id_alternatif_periode]', '$r[id_kriteria]', '" . $Angka[$Angka_0a][$Angka_1] . "')")->execute();
+                } else {
+                    $connection->createCommand("UPDATE anp_nilai_limit_s SET nilai='" . $Angka[$Angka_0a][$Angka_1] . "' WHERE tipe=3 AND id_node_0='$d_node[id_alternatif_periode]' AND id_node='$r[id_kriteria]'")->execute();
+                }
+                $Angka_1++;
+            }
+            $h_node = $connection->createCommand("SELECT a.id as id_kriteria, a.kriteria FROM kriteria as a ORDER BY a.id ASC");
+            foreach ($h_node->queryAll() as $d_node) {
+                $cek_data = $connection->createCommand("SELECT COUNT(*) FROM anp_nilai_limit_s WHERE tipe=4 AND id_node_0='$d_node[id_kriteria]' AND id_node='$r[id_kriteria]'")->queryScalar();;
+                if ($cek_data[0] == 0) {
+                    $connection->createCommand("INSERT INTO anp_nilai_limit_s(tipe, id_node_0, id_node, nilai) VALUES (4, '$d_node[id_kriteria]', '$r[id_kriteria]', '" . $Angka[$Angka_0a][$Angka_1] . "')")->execute();
+                } else {
+                    $connection->createCommand("UPDATE anp_nilai_limit_s SET nilai='" . $Angka[$Angka_0a][$Angka_1] . "' WHERE tipe=4 AND id_node_0='$d_node[id_kriteria]' AND id_node='$r[id_kriteria]'")->execute();
+                }
+                $Angka_1++;
+            }
+            $Angka_0a++;
         }
     }
 
@@ -254,7 +308,7 @@ $listKriteria = PerbandinganKriteriaController::listKriteria();
         for ($i2 = 0; $i2 <= $Angka_0; $i2++) {
             for ($j2 = 0; $j2 <= $Angka_0; $j2++) {
                 $a = number_format($Angka[$i2][$j2], 4);
-                $b = number_format($Angka[$i2][$j2 + 1], 4);
+                $b = isset($Angka[$i2][$j2 + 1]) ? number_format($Angka[$i2][$j2 + 1], 4) : 0;
 
                 if ($a == 0 && $b == 0) {
                     $h_test = 0;
@@ -277,9 +331,11 @@ $listKriteria = PerbandinganKriteriaController::listKriteria();
         return $jml_h_test;
     }
 
+
     function hitungkali($Angka, $Angka_0)
     {
         $x = cek_stabilitas($Angka, $Angka_0);
+
         $nilai_kolom = 0;
         $putar = 1;
         while ($x > 0) {
@@ -340,13 +396,20 @@ $listKriteria = PerbandinganKriteriaController::listKriteria();
         return $hasil;
     }
 
-    function hitung_normal($Angka, $periode)
+    function tampilnormal($Angka, $Angka_0)
+    {
+        for ($ix = 0; $ix <= $Angka_0; $ix++) {
+            //Print " | ".$Angka[$ix]." ";
+        }
+    }
+
+    function hitung_normal($Angka)
     {
         $connection = Yii::$app->getDb();
 
         $nilai_jadi = 0;
         $h_node = $connection->createCommand("SELECT a.id as id_alternatif_periode, a.nama_lengkap as alternatif, b.id as ids FROM biodata AS a, berkas AS b WHERE a.id = b.biodata_id ORDER BY a.id ASC");
-        $jml = $h_node->queryColumn($h_node);
+        $jml = count($h_node->queryAll());
         for ($ja = 0; $ja <= $jml - 1; $ja++) {
             $b = $Angka[$ja][0];
             $nilai_jadi = $nilai_jadi + $b;
@@ -354,18 +417,18 @@ $listKriteria = PerbandinganKriteriaController::listKriteria();
         //echo "--".$nilai_jadi."--";
 
         $j = 0;
-        while ($d_node = mysql_fetch_array($h_node)) {
+        foreach ($h_node->queryAll() as $d_node) {
             if ($nilai_jadi > 0) {
                 $hasil_normal = number_format($b = $Angka[$j][0] / $nilai_jadi, 8);
             } else {
                 $hasil_normal = 0;
             }
 
-            $cek_data = mysql_fetch_array(querydb("SELECT COUNT(*) FROM anp_hasil WHERE id_alternatif_periode='$d_node[id_alternatif_periode]'"));
-            if ($cek_data[0] == 0) {
-                querydb("INSERT INTO anp_hasil(id_alternatif_periode, nilai, nilai_normal) VALUES ('$d_node[id_alternatif_periode]', '" . $Angka[$j][0] . "', '" . $hasil_normal . "')");
+            $cek_data = $connection->createCommand("SELECT COUNT(*) FROM anp_hasil WHERE id_alternatif_periode='$d_node[id_alternatif_periode]'")->queryScalar();
+            if ($cek_data == 0) {
+                $connection->createCommand("INSERT INTO anp_hasil(id_alternatif_periode, nilai, nilai_normal) VALUES ('$d_node[id_alternatif_periode]', '" . $Angka[$j][0] . "', '" . $hasil_normal . "')")->execute();
             } else {
-                querydb("UPDATE anp_hasil SET nilai='" . $Angka[$j][0] . "', nilai_normal='" . $hasil_normal . "' WHERE id_alternatif_periode='$d_node[id_alternatif_periode]'");
+                $connection->createCommand("UPDATE anp_hasil SET nilai='" . $Angka[$j][0] . "', nilai_normal='" . $hasil_normal . "' WHERE id_alternatif_periode='$d_node[id_alternatif_periode]'")->execute();
             }
             $j++;
         }
@@ -376,7 +439,15 @@ $listKriteria = PerbandinganKriteriaController::listKriteria();
 
     ?>
     <div style='display;overflow-x:scroll;overflow-y:scroll;width:50'>
-        <h3 style="text-align:left; font-size:16px; margin-bottom:10px; font-weight:bold;">Limit Supermatriks - Perpangkatan Matriks Ke:
+        <h3 style="text-align:left; font-size:16px; margin-bottom:10px; font-weight:bold;">Limit Supermatriks
+            <?php
+
+            $hasil = hitungkali($Angka, $Angka_0);
+            //SIMPAN HASIL LIMIT MATRIKS
+
+            save_matriks($hasil);
+            // tampilmatriks($hasil, $Angka_0);
+            ?>
         </h3>
         <?php
         $h_node_a = $connection->createCommand("SELECT a.id as id_alternatif_periode, a.nama_lengkap as alternatif, b.id as ids FROM biodata AS a, berkas AS b WHERE a.id = b.biodata_id ORDER BY a.id ASC");
@@ -416,18 +487,106 @@ $listKriteria = PerbandinganKriteriaController::listKriteria();
             foreach ($h_tampil_a->queryAll() as $r) {
                 $n_node = sprintf("A%02d", $no);
             ?>
+                <tr>
+                    <td><?php echo $no++; ?></td>
+                    <td><?php echo $n_node . ' - ' . $r['alternatif']; ?></td>
+                    <?php
+                    $h_node = $connection->createCommand("SELECT a.id as id_alternatif_periode, a.nama_lengkap as alternatif, b.id as ids FROM biodata AS a, berkas AS b WHERE a.id = b.biodata_id ORDER BY a.id ASC");
+                    foreach ($h_node->queryAll() as $d_node) {
+                        $h_nilai = $connection->createCommand("SELECT nilai FROM anp_nilai_limit_s WHERE tipe=1 AND id_node_0='$d_node[id_alternatif_periode]' AND
+                                      id_node='$r[id_alternatif_periode]'");
+                        $d_nilai = $h_nilai->queryOne();
+                    ?>
+                        <td style="text-align:center;"><?php echo number_format($d_nilai['nilai'] * 1, 5, ',', '.'); ?></td>
+                    <?php } ?>
+
+                    <?php
+                    $h_node = $connection->createCommand("SELECT id as id_kriteria, kriteria FROM kriteria ORDER BY id ASC");
+                    foreach ($h_node->queryAll() as $d_node) {
+                        $h_nilai = $connection->createCommand("SELECT nilai FROM anp_nilai_limit_s WHERE  tipe=2 AND id_node_0='$d_node[id_kriteria]' AND
+                                            id_node='$r[id_alternatif_periode]'");
+                        $d_nilai = $h_nilai->queryOne();
+                    ?>
+                        <td style="text-align:center;"><?php echo number_format($d_nilai['nilai'] * 1, 5, ',', '.'); ?></td>
+                    <?php } ?>
+                </tr>
+            <?php } ?>
             <tr>
-                <td><?php echo $no++; ?></td>
-                <td><?php echo $n_node . ' - ' . $r['alternatif']; ?></td>
-                <?php 
-			  $h_node= $connection->createCommand("SELECT a.id as id_alternatif_periode, a.nama_lengkap as alternatif, b.id as ids FROM biodata AS a, berkas AS b WHERE a.id = b.biodata_id ORDER BY a.id ASC");
-                foreach ($h_node->queryAll() as $d_node) {
-                   
-                }
-                ?>
+                <td></td>
+                <td style="font-weight:bold; color:#333;">Kriteria</td>
+                <td colspan="<?php echo $jml_node_a + $jml_node_b; ?>"></td>
             </tr>
+
+            <?php
+            $no2 = 1;
+            $tampil = "SELECT a.id as id_kriteria, a.kriteria FROM kriteria as a ORDER BY a.id ASC";
+            $h_tampil = $connection->createCommand($tampil);
+            foreach ($h_tampil->queryAll() as $r) {
+
+                $n_node = sprintf("K%02d", $no2);
+            ?>
+                <tr>
+                    <td style="text-align:center;"><?php echo $no2++; ?></td>
+                    <td><?php echo $n_node . ' - ' . $r['kriteria']; ?></td>
+                    <?php
+                    $h_node = $connection->createCommand("SELECT a.id as id_alternatif_periode, a.nama_lengkap as alternatif, b.id as ids FROM biodata AS a, berkas AS b WHERE a.id = b.biodata_id ORDER BY a.id ASC");
+                    foreach ($h_node->queryAll() as $d_node) {
+
+                        $h_nilai = $connection->createCommand("SELECT nilai FROM anp_nilai_limit_s WHERE tipe=3 AND id_node_0='$d_node[id_alternatif_periode]' AND
+											  id_node='$r[id_kriteria]'");
+                        $d_nilai = $h_nilai->queryOne();
+                    ?>
+                        <td style="text-align:center;"><?php echo number_format($d_nilai['nilai'] * 1, 5, ',', '.'); ?></td>
+                    <?php } ?>
+                    <?php
+                    $h_node = $connection->createCommand("SELECT id as id_kriteria, kriteria FROM kriteria ORDER BY id ASC");
+                    foreach ($h_node->queryAll() as  $d_node) {
+                        $h_nilai = $connection->createCommand("SELECT nilai FROM anp_nilai_limit_s WHERE  tipe=4 AND id_node_0='$d_node[id_kriteria]' AND
+											  id_node='$r[id_kriteria]'");
+                        $d_nilai = $h_nilai->queryOne();
+                    ?>
+                        <td style="text-align:center;"><?php echo number_format($d_nilai['nilai'] * 1, 5, ',', '.'); ?></td>
+                    <?php } ?>
+                </tr>
             <?php } ?>
         </table>
+        <hr>
+
+        <h3 style="text-align:left; font-size:16px; margin-bottom:10px; font-weight:bold;">Hasil Sintesize (Nilai Normal Tertinggi merupakan Alternatif Terbaik)</h3>
+        <table id="example1" class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th width="20">No</th>
+                    <th>Alternatif</th>
+                    <th>Tanggal Lahir</th>
+                    <th>Nilai Asal (RAW)</th>
+                    <th>Nilai Normal</th>
+                </tr>
+            </thead>
+            <?php
+            $h_node = $connection->createCommand("SELECT a.id as id_alternatif_periode, a.nama_lengkap as alternatif, b.id as ids FROM biodata AS a, berkas AS b WHERE a.id = b.biodata_id ORDER BY a.id ASC");
+
+            $no = 1;
+            $hquery = $connection->createCommand("SELECT c.id as id_alternatif_periode, c.id as id_alternatif, c.nama_lengkap as alternatif, c.tanggal_lahir, d.nilai, d.nilai_normal 
+						   FROM  biodata as c, anp_hasil as d
+						   WHERE c.id=d.id_alternatif_periode ORDER BY d.nilai_normal DESC");
+            $jml_baris = $hquery->queryScalar();
+            foreach ($hquery->queryAll() as $data) {
+            ?>
+                <tr>
+                    <td><?php echo $no++; ?></td>
+                    <td><?php echo $data['alternatif']; ?></td>
+                    <td><?php echo date("d/m/Y", strtotime($data['tanggal_lahir'])); ?></td>
+                    <td><?php echo number_format($data['nilai'], 6, ',', '.'); ?></td>
+                    <td><?php echo number_format($data['nilai_normal'], 8, ',', '.'); ?></td>
+                </tr>
+            <?php } ?>
+        </table>
+        <hr>
+        <?php include "grafik_1_container.php"; ?>
+
     </div>
+</div>
+</div>
 
 </div>
