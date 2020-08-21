@@ -551,6 +551,11 @@ $listKriteria = PerbandinganKriteriaController::listKriteria();
             <?php } ?>
         </table>
         <hr>
+        <?php
+        //Sintesize
+        tampilnormal(hitung_normal($hasil), $Angka_0);
+        //Tampilkan hasil sintezise
+        ?>
 
         <h3 style="text-align:left; font-size:16px; margin-bottom:10px; font-weight:bold;">Hasil Sintesize (Nilai Normal Tertinggi merupakan Alternatif Terbaik)</h3>
         <table id="example1" class="table table-bordered table-hover table-striped">
