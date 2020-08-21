@@ -2,8 +2,9 @@
 namespace backend\controllers;
 
 use backend\helpers\Constant;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
-
+use Yii;
 class HasilController extends Controller{
 
     public function actionHasilPerhitungan()
@@ -39,5 +40,28 @@ class HasilController extends Controller{
             'jmlAlternatif' => $jmlAlternatif,
             'newHeader' => $newHeader,
         ]);
+    }
+
+    public function actionGrafik()
+    {
+        $listAlternatif = PerbandinganAlternatifController::listAlternatif();
+        $alternatif = [];
+        $dataHasil = [];
+        foreach ($listAlternatif as $key => $valuelistAlternatif) {
+            $alternatif[$key] = $valuelistAlternatif['nama_lengkap'];
+        }
+
+        $connection = Yii::$app->getDb();
+        $data = $connection->createCommand("SELECT nilai_normal FROM anp_hasil")->queryAll();
+        foreach ($data as $keys => $valuedata) {
+            $dataHasil[$keys] = (float)$valuedata['nilai_normal'];
+        }
+
+        $callback = [
+            'data'      => $dataHasil,
+            'alternatif' => $alternatif
+        ];
+
+        return json_encode($callback);
     }
 }
