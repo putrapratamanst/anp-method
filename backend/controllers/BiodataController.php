@@ -63,9 +63,11 @@ class BiodataController extends Controller
             ->setTo($user->email)
             ->setFrom("putra@jojonomic.com")
             ->setSubject('Dokumen Yang Belum Dilengkapi')
-
         ->send();
-        var_dump($check);
+
+        Yii::$app->session->setFlash('success', 'Email Verifikasi Jabfung Telah Dikirim');
+        
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**

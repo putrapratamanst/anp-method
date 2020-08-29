@@ -3,6 +3,7 @@
 use frontend\models\Berkas;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\widgets\Alert;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Biodata */
@@ -15,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="x_panel">
 
     <div class="biodata-view">
+        <center><?= Alert::widget() ?></center>
 
         <h1><?= Html::encode($this->title) ?></h1>
 
@@ -63,12 +65,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <tr>
                         <?php if (strpos($key, 'nama_berkas') !== false) { ?>
                             <td><?= $attribute[$key]; ?></td>
-                            <td><?php 
-                            if($value){
-                                echo "Sudah Diupload";
-                            } else {
-                                echo "Belum Diupload";
-                            } ?></td>
+                            <td><?php
+                                if ($value) {
+                                    echo "Sudah Diupload";
+                                } else {
+                                    echo "Belum Diupload";
+                                } ?></td>
                         <?php } ?>
                     </tr>
                 <?php } ?>

@@ -20,8 +20,10 @@ $user = Yii::$app->user->identity;
 </style>
 
 <body class="nav-md">
+
     <div class="container body">
         <div class="main_container">
+
             <?= $this->render('/layouts/sidenav'); ?>
             <?= $this->render('/layouts/topnav'); ?>
             <div class="right_col" role="main">
@@ -29,7 +31,7 @@ $user = Yii::$app->user->identity;
 
                 <?= $content; ?>
             </div>
-            
+
         </div>
         <?= $this->render('/layouts/footer'); ?>
     </div>
