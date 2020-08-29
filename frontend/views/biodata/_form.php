@@ -30,8 +30,11 @@ $jurusanList = ArrayHelper::map($jurusan, 'id', 'nama');
     <?= $form->field($model, 'nama_lengkap')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'nip')->textInput(['maxlength' => true]) ?>
+
     <?php if ($model->isNewRecord) { ?>
         <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'password')->passwordInput() ?>
+
     <?php } ?>
 
     <?= $form->field($model, 'tempat_lahir')->textInput(['maxlength' => true]) ?>

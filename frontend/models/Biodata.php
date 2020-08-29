@@ -28,6 +28,7 @@ class Biodata extends \yii\db\ActiveRecord
      * {@inheritdoc}
      */
     public $email;
+    public $password;
     public static function tableName()
     {
         return 'biodata';
@@ -42,7 +43,9 @@ class Biodata extends \yii\db\ActiveRecord
             [['user_id', 'jabatan', 'prodi'], 'integer'],
             [['email'], 'email'],
             [['nama_lengkap', 'nip', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'pendidikan', 'pangkat', 'position', 'work_unit'], 'string', 'max' => 255],
-            [['nama_lengkap','email', 'nip', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'pendidikan', 'pangkat', 'position', 'work_unit', 'jabatan', 'prodi', 'jurusan'], 'required'],
+            [['nama_lengkap','email', 'nip', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'pendidikan', 'pangkat', 'position', 'work_unit', 'jabatan', 'prodi', 'jurusan', 'password'], 'required'],
+            ['password', 'string', 'min' => 6],
+
         ];
     }
 

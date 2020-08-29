@@ -87,7 +87,7 @@ class BiodataController extends Controller
             $post = Yii::$app->request->post()['Biodata'];
             $modelSignup->username = $post['nama_lengkap'];
             $modelSignup->email = $post['email'];
-            $modelSignup->password = "123456";
+            $modelSignup->password = $post['password'];
 
             if(!$modelSignup->signup()){
                 $error = "";
