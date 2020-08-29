@@ -84,4 +84,9 @@ class Biodata extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Jabatan::className(), ['id' => 'jabatan']);
     }
+        public function getUsers()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
 }

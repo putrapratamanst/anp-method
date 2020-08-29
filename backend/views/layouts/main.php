@@ -29,9 +29,9 @@ $user = Yii::$app->user->identity;
 
                 <?= $content; ?>
             </div>
-            <?= $this->render('/layouts/footer'); ?>
-
+            
         </div>
+        <?= $this->render('/layouts/footer'); ?>
     </div>
 
     <!-- jQuery -->

@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Biodata;
 use backend\models\BiodataSearch;
+use frontend\models\Berkas;
+use frontend\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,6 +29,43 @@ class BiodataController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionEmail($id)
+    {
+        $berkas = Berkas::find()->where(['biodata_id' => $id])->one();
+        $dataUser = Biodata::find()->with('users')
+        ->where(['biodata.id' => $id])->one();
+
+        // $unweightAlternatif = Eigen::find()->select(['eigen.*', 'biodata.nama_lengkap'])->join('left join', 'biodata', 'eigen.id_alternatif_kriteria = biodata.id')
+        // ->where(['type' => Constant::TYPE_ALTERNATIF])->asArray()->all();
+
+        $attribute = $berkas->attributeLabels();
+        $user = $dataUser->getRelation('users')->one();
+        $data = [];
+        foreach ($berkas as $key => $value) {
+            if (strpos($key, 'nama_berkas') !== false) { 
+                if(!$value){
+                    $data[] =  $attribute[$key];
+                }
+            }
+        }
+
+        // Yii::$app->mailer->compose()
+        //     ->setFrom('putrapratamanst@gmail.com')
+        //     ->setTo('putra@jojonomic.com')
+        //     ->setSubject('Message subject')
+        //     ->setTextBody('Plain text content')
+        //     ->setHtmlBody('<b>HTML content</b>')
+        //     ->send();
+
+        $check = Yii::$app->mailer->compose('verif',  ['data' => $data])
+            ->setTo($user->email)
+            ->setFrom("putra@jojonomic.com")
+            ->setSubject('Dokumen Yang Belum Dilengkapi')
+
+        ->send();
+        var_dump($check);
     }
 
     /**
